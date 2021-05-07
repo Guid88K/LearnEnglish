@@ -17,6 +17,7 @@ class DictionaryResource extends JsonResource
         return [
             'word_eng' => $this->word_eng,
             'word_ukr' => $this->word_ukr,
+            'example_sentences' => $this->example_sentences,
             'image' => $this->image
         ];
     }

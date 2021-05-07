@@ -18,6 +18,7 @@ class DictionaryController extends Controller
     public function index()
     {
         return DictionaryResource::collection(Dictionary::orderBy('updated_at', 'desc')->get());
+        
     }
 
     /**
@@ -29,12 +30,16 @@ class DictionaryController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        if ($request['image']) {
+            $files = $request['image'];
+            $destinationPath = 'uploads'; // upload path
+            $profileImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
+            $files->move($destinationPath, $profileImage);
+            $data['image'] = $profileImage;
+        }else{
+            $data['image']= '1';
+        }
 
-        $files = $request['image'];
-        $destinationPath = 'uploads'; // upload path
-        $profileImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
-        $files->move($destinationPath, $profileImage);
-        $data['image'] = $profileImage;
 
 
         $dictionary = Dictionary::create($data);
@@ -73,12 +78,12 @@ class DictionaryController extends Controller
             $profileImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
             $files->move($destinationPath, $profileImage);
             $data['image'] = $profileImage;
-        }else{
+        } else {
             $data['image'] = $dictionary->image;
         }
 
         $dictionary->update($data);
-          /* return response()->json($dictionary, 201); */
+        /* return response()->json($dictionary, 201); */
         return new DictionaryResource($dictionary);
     }
 

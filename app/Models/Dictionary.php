@@ -10,5 +10,5 @@ class Dictionary extends Model
 
     use HasFactory;
 
-    protected $fillable = ['word_eng', 'word_ukr', 'image'];
+    protected $fillable = ['word_eng', 'word_ukr','example_sentences', 'image'];
 }

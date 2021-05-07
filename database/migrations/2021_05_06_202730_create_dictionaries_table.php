@@ -17,6 +17,7 @@ class CreateDictionariesTable extends Migration
             $table->id();
             $table->string('word_eng');
             $table->string('word_ukr');
+            $table->text('example_sentences');
             $table->string('image');
             $table->timestamps();
         });
