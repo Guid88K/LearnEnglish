@@ -10,6 +10,7 @@ use PhpParser\Node\Expr\Cast\Bool_;
 
 class DictionaryController extends Controller
 {
+  
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +19,6 @@ class DictionaryController extends Controller
     public function index()
     {
         return DictionaryResource::collection(Dictionary::orderBy('updated_at', 'desc')->get());
-        
     }
 
     /**
@@ -36,8 +36,8 @@ class DictionaryController extends Controller
             $profileImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
             $files->move($destinationPath, $profileImage);
             $data['image'] = $profileImage;
-        }else{
-            $data['image']= '1';
+        } else {
+            $data['image'] = '1';
         }
 
 
