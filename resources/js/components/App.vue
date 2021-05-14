@@ -40,12 +40,6 @@
                     </div>
                     <div v-else-if="word_data.length !== 0">
                         <div class="card" style="width: 40rem">
-                            <!-- <img
-                                class="card-img-top"
-                                :src="'/uploads/' + w_data.image"
-                                alt="Card image cap"
-                            /> -->
-
                             <div class="card-body">
                                 <div class="d-flex justify-content-end">
                                     <button
@@ -55,8 +49,22 @@
                                         @click="close"
                                     ></button>
                                 </div>
+                                <img
+                                    class="card-img-top rounded mx-auto d-block"
+                                    style="max-width: 250px; height: auto"
+                                    :src="
+                                        '/uploads/' +
+                                        word_data[item_in_arr].image
+                                    "
+                                    alt="Card image cap"
+                                />
                                 <p
-                                    class="card-text h4 text-center font-weight-bold"
+                                    class="
+                                        card-text
+                                        h4
+                                        text-center
+                                        font-weight-bold
+                                    "
                                 >
                                     {{ word_data[item_in_arr].word_eng }}
                                 </p>
@@ -136,11 +144,16 @@
                                 ></button>
                             </div>
                             <form
+                                ref="form"
                                 @submit.prevent="addWord"
                                 enctype="multipart/form-data"
                             >
                                 <div class="modal-body">
-                                    <div class="mb-3">
+                                    <app-input
+                                        label="Англійське слово"
+                                        v-model:value="word_eng"
+                                    ></app-input>
+                                    <!-- <div class="mb-3">
                                         <label for="word_eng" class="form-label"
                                             >Англійське слово</label
                                         >
@@ -151,12 +164,13 @@
                                             v-model="word_eng"
                                             aria-describedby="emailHelp"
                                         />
-                                        <!-- <div id="emailHelp" class="form-text">
-                                            We'll never share your email with
-                                            anyone else.
-                                        </div> -->
-                                    </div>
-                                    <div class="mb-3">
+                                    
+                                    </div> -->
+                                    <app-input
+                                        label="Переклад на українську"
+                                        v-model:value="word_ukr"
+                                    ></app-input>
+                                    <!-- <div class="mb-3">
                                         <label for="word_ukr" class="form-label"
                                             >Переклад на українську</label
                                         >
@@ -166,7 +180,7 @@
                                             id="word_ukr"
                                             v-model="word_ukr"
                                         />
-                                    </div>
+                                    </div> -->
                                     <div class="mb-3">
                                         <label
                                             for="example_sentences"
@@ -180,6 +194,7 @@
                                             rows="3"
                                         ></textarea>
                                     </div>
+
                                     <div class="mb-3">
                                         <label
                                             for="formFileMultiple"
@@ -231,7 +246,11 @@
 
 <script>
 import axios from "axios";
+import AppInput from "./AppInputComponent.vue";
 export default {
+    components: {
+        "app-input": AppInput,
+    },
     data() {
         return {
             word_eng: "",
@@ -277,11 +296,12 @@ export default {
                 dataWord,
                 config
             );
-            console.log(response);
-            this.word_data.push(dataWord);
-            this.word_eng = "";
-            (this.word_ukr = ""), (this.example_sentences = "");
-            (this.image = []), console.log(this.image);
+            console.log(response.data.data);
+            this.word_data.push(response.data.data);
+            /* this.word_eng = "";
+            this.word_ukr = "";*/
+            this.example_sentences = "";
+            this.$refs.form.reset();
         },
     },
 };

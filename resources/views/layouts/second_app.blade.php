@@ -20,22 +20,26 @@
     <div>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Navbar w/ text</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-                    aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                <a class="navbar-brand" href="#">
+                    <img src="https://icon-library.com/images/english-icon-png/english-icon-png-21.jpg" width="30" height="30" class="d-inline-block align-top" alt="">
+                    Bootstrap
+                  </a>
                 <div class="collapse navbar-collapse" id="navbarText">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link text-light" aria-current="page" href="{{url('/dictionary')}}">Головна</a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="#">Граматика</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Features</a>
+                            <a class="nav-link text-light" href="#">Таблиця неправильних дієслів</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Pricing</a>
+                            <a class="nav-link text-light" href="#">Статистика</a>
                         </li>
+                        
                     </ul>
                     <span class="navbar-text">
                         @guest
