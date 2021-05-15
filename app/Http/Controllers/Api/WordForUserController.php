@@ -11,6 +11,14 @@ use App\Models\User;
 
 class WordForUserController extends Controller
 {
+    public function all_word($user_id)
+    {
+        $user = User::find($user_id);
+       /*  $word = Dictionary::all(); */
+        $all_word = $user->dictionaries()->get();
+        return DictionaryResource::collection($all_word);
+    }
+
     public function store_word_for_user($user_id, $word_id)
     {
 

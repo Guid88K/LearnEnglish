@@ -16615,7 +16615,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       image: "",
       example_sentences: "",
       item_in_arr: 0,
-      word_data: []
+      word_data: [],
+      user_id: document.querySelector("meta[name='user-id']").getAttribute("content")
     };
   },
   methods: {
@@ -16624,13 +16625,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     check_image: function check_image(e) {
       this.image = e.target.files[0];
-      console.log(this.image);
+    },
+    not_know_word: function not_know_word() {
+      shuffle(this.word_data);
+      console.log(this.word_data);
     },
     get_data: function get_data() {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var _yield$axios$get, data;
+        var _yield$axios$get, data, secondData;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
@@ -16642,10 +16646,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 2:
                 _yield$axios$get = _context.sent;
                 data = _yield$axios$get.data;
-                _this.word_data = data.data;
-                console.log(_this.word_data);
+                _context.next = 6;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().get("http://127.0.0.1:8000/api/all_user_word/" + _this.user_id);
 
               case 6:
+                secondData = _context.sent;
+                console.log(secondData.data.data);
+                console.log(data.data);
+                _this.word_data = data.data.filter(function (ar) {
+                  return !secondData.data.data.find(function (rm) {
+                    return rm.id === ar.id;
+                  });
+                });
+                console.log(_this.word_data);
+                shuffle(_this.word_data);
+
+              case 12:
               case "end":
                 return _context.stop();
             }
@@ -16681,7 +16697,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 9:
                 response = _context2.sent;
-                console.log(response.data.data);
 
                 _this2.word_data.push(response.data.data);
                 /* this.word_eng = "";
@@ -16692,16 +16707,54 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this2.$refs.form.reset();
 
-              case 14:
+              case 13:
               case "end":
                 return _context2.stop();
             }
           }
         }, _callee2);
       }))();
+    },
+    save_word: function save_word(word_id) {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        var data;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().post("http://127.0.0.1:8000/api/save_word/" + _this3.user_id + "/" + word_id);
+
+              case 2:
+                data = _context3.sent;
+                console.log(data);
+                _this3.item_in_arr++;
+
+              case 5:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
     }
   }
 });
+
+function shuffle(a) {
+  var j, x, i;
+
+  for (i = a.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1));
+    x = a[i];
+    a[i] = a[j];
+    a[j] = x;
+  }
+
+  return a;
+}
 
 /***/ }),
 
@@ -16729,7 +16782,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     change: function change(event) {
-      console.log(this.$emit("update:value", event.target.value));
       this.$emit("update:value", event.target.value);
     }
   }
@@ -16988,12 +17040,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
     onClick: _cache[4] || (_cache[4] = function ($event) {
-      return $data.item_in_arr++;
+      return $options.save_word($data.word_data[$data.item_in_arr].id);
     }),
     "class": "btn btn-primary"
   }, " Знаю "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-    onClick: _cache[5] || (_cache[5] = function ($event) {
-      return $data.item_in_arr++;
+    onClick: _cache[5] || (_cache[5] = function () {
+      return $options.not_know_word && $options.not_know_word.apply($options, arguments);
     }),
     "class": "btn btn-primary"
   }, " Не знаю ")]), _hoisted_23])])])])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_24, "Натисніть \"Вчити слова\", щоб розпочати"))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
@@ -17096,6 +17148,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 /* harmony import */ var _components_App_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/App.vue */ "./resources/js/components/App.vue");
 
+
+/* import SecondApp from './components/ExampleComponent.vue'
+createApp(SecondApp).mount("#second") */
 
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)(_components_App_vue__WEBPACK_IMPORTED_MODULE_1__.default).mount("#app");
 

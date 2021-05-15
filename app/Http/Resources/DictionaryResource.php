@@ -15,6 +15,7 @@ class DictionaryResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'word_eng' => $this->word_eng,
             'word_ukr' => $this->word_ukr,
             'example_sentences' => $this->example_sentences,

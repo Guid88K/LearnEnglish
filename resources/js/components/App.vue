@@ -83,13 +83,17 @@
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
                                         <button
-                                            @click="item_in_arr++"
+                                            @click="
+                                                save_word(
+                                                    word_data[item_in_arr].id
+                                                )
+                                            "
                                             class="btn btn-primary"
                                         >
                                             Знаю
                                         </button>
                                         <button
-                                            @click="item_in_arr++"
+                                            @click="not_know_word"
                                             class="btn btn-primary"
                                         >
                                             Не знаю
@@ -259,22 +263,39 @@ export default {
             example_sentences: "",
             item_in_arr: 0,
             word_data: [],
+            user_id: document
+                .querySelector("meta[name='user-id']")
+                .getAttribute("content"),
         };
     },
+
     methods: {
         null_data() {
             this.word_data = [];
         },
         check_image(e) {
             this.image = e.target.files[0];
-            console.log(this.image);
+        },
+        not_know_word() {
+            shuffle(this.word_data);
+            console.log(this.word_data)
         },
         async get_data() {
             const { data } = await axios.get(
                 "http://127.0.0.1:8000/api/dictionary"
             );
-            this.word_data = data.data;
+            const secondData = await axios.get(
+                "http://127.0.0.1:8000/api/all_user_word/" + this.user_id
+            );
+            console.log(secondData.data.data);
+            console.log(data.data);
+
+            this.word_data = data.data.filter(
+                (ar) => !secondData.data.data.find((rm) => rm.id === ar.id)
+            );
             console.log(this.word_data);
+
+            shuffle(this.word_data);
         },
         close() {
             this.word_data = [];
@@ -287,6 +308,7 @@ export default {
                 },
             };
             let dataWord = new FormData();
+
             dataWord.append("word_eng", this.word_eng);
             dataWord.append("word_ukr", this.word_ukr);
             dataWord.append("example_sentences", this.example_sentences);
@@ -296,15 +318,34 @@ export default {
                 dataWord,
                 config
             );
-            console.log(response.data.data);
             this.word_data.push(response.data.data);
             /* this.word_eng = "";
             this.word_ukr = "";*/
             this.example_sentences = "";
             this.$refs.form.reset();
         },
+        async save_word(word_id) {
+            const data = await axios.post(
+                "http://127.0.0.1:8000/api/save_word/" +
+                    this.user_id +
+                    "/" +
+                    word_id
+            );
+            console.log(data);
+            this.item_in_arr++;
+        },
     },
 };
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
+}
 </script>
 
 <style></style>

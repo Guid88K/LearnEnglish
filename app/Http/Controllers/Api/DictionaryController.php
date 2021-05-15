@@ -10,7 +10,7 @@ use PhpParser\Node\Expr\Cast\Bool_;
 
 class DictionaryController extends Controller
 {
-  
+
     /**
      * Display a listing of the resource.
      *
@@ -29,22 +29,26 @@ class DictionaryController extends Controller
      */
     public function store(Request $request)
     {
+
         $data = $request->all();
-        if ($request['image']) {
-            $files = $request['image'];
-            $destinationPath = 'uploads'; // upload path
-            $profileImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
-            $files->move($destinationPath, $profileImage);
-            $data['image'] = $profileImage;
+       
+        if (!(Dictionary::where('word_eng', $data['word_eng'])->first())) {
+            if ($request['image']) {
+                $files = $request['image'];
+                $destinationPath = 'uploads'; // upload path
+                $profileImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
+                $files->move($destinationPath, $profileImage);
+                $data['image'] = $profileImage;
+            } else {
+                $data['image'] = '1';
+            }
+
+            $dictionary = Dictionary::create($data);
+            /* return response()->json($dictionary, 201); */
+            return new DictionaryResource($dictionary);
         } else {
-            $data['image'] = '1';
+            return response()->json(['message' => 'this word exist'], 500);
         }
-
-
-
-        $dictionary = Dictionary::create($data);
-        /* return response()->json($dictionary, 201); */
-        return new DictionaryResource($dictionary);
     }
 
     /**

@@ -23,7 +23,7 @@ export default {
     },
     methods: {
         change(event) {
-            console.log(this.$emit("update:value", event.target.value))
+           
             this.$emit("update:value", event.target.value);
         },
     },
