@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDictionaryUserTable extends Migration
+class CreateDictionaryUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateDictionaryUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('dictionary_user', function (Blueprint $table) {
+        Schema::create('dictionary_users', function (Blueprint $table) {
             $table->integer('user_id');
             $table->integer('dictionary_id');
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateDictionaryUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dictionary_user');
+        Schema::dropIfExists('dictionary_users');
     }
 }

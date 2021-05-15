@@ -10,5 +10,10 @@ class Dictionary extends Model
 
     use HasFactory;
 
-    protected $fillable = ['word_eng', 'word_ukr','example_sentences', 'image'];
+    protected $fillable = ['word_eng', 'word_ukr', 'example_sentences', 'image'];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'dictionary_users');
+    }
 }
