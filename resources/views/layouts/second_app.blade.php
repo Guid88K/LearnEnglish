@@ -36,9 +36,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" href="#">Таблиця неправильних дієслів</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" href="#">Статистика</a>
-                        </li>
+                       
                         
                     </ul>
                     <span class="navbar-text">
