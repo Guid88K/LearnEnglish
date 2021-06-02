@@ -1,10 +1,12 @@
 <template>
-$END$
+    <div>
+        <p>Irregular words</p>
+    </div>
 </template>
 
 <script>
 export default {
-name: "IrregularVerbsComponent"
+    name: "IrregularVerbsComponent"
 }
 </script>
 

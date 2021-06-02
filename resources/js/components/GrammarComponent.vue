@@ -1,10 +1,12 @@
 <template>
-$END$
+    <div>
+        <p>Grammar</p>
+    </div>
 </template>
 
 <script>
 export default {
-name: "GrammarComponent"
+    name: "GrammarComponent"
 }
 </script>
 

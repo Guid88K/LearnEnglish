@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DictionaryRequest;
 use App\Http\Resources\DictionaryResource;
 use App\Models\Dictionary;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class DictionaryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
@@ -25,13 +26,13 @@ class DictionaryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return DictionaryResource|\Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(DictionaryRequest $request)
     {
 
-        $data = $request->all();
-       
+        $data = $request->validated();
+
         if (!(Dictionary::where('word_eng', $data['word_eng'])->first())) {
             if ($request['image']) {
                 $files = $request['image'];
@@ -101,6 +102,6 @@ class DictionaryController extends Controller
     {
         $dictionary = Dictionary::findOrFail($id);
         $dictionary->delete();
-        return response()->json(null, 204);
+        return response()->json(['message' => 'delete success'], 204);
     }
 }
