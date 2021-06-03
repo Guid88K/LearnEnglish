@@ -19,7 +19,7 @@ class DictionaryController extends Controller
      */
     public function index()
     {
-        return DictionaryResource::collection(Dictionary::orderBy('updated_at', 'desc')->get());
+        return DictionaryResource::collection(Dictionary::all());
     }
 
     /**
@@ -56,7 +56,7 @@ class DictionaryController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return DictionaryResource
      */
     public function show($id)
     {
@@ -69,7 +69,7 @@ class DictionaryController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return DictionaryResource
      */
     public function update(Request $request, $id)
     {
@@ -96,7 +96,7 @@ class DictionaryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {

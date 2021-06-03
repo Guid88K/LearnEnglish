@@ -16785,6 +16785,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _AppInputComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AppInputComponent */ "./resources/js/components/AppInputComponent.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -16792,17 +16793,31 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "AdminComponent",
+  components: {
+    "app-input": _AppInputComponent__WEBPACK_IMPORTED_MODULE_2__.default
+  },
   mounted: function mounted() {
     this.all_known_word();
   },
   data: function data() {
     return {
-      user_all_known_word: []
+      user_all_known_word: [],
+      word_eng: "",
+      word_ukr: "",
+      image: "",
+      example_sentences: "",
+      word_data: []
     };
   },
   methods: {
+    sortElement: function sortElement(array) {
+      array.sort(function (a, b) {
+        return b.id - a.id; //sort by id
+      });
+    },
     all_known_word: function all_known_word() {
       var _this = this;
 
@@ -16818,9 +16833,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 2:
                 secondData = _context.sent;
                 _this.user_all_known_word = secondData.data.data;
+
+                _this.sortElement(_this.user_all_known_word);
+
                 console.log(secondData.data.data);
 
-              case 5:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -16850,6 +16868,55 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             }
           }
         }, _callee2);
+      }))();
+    },
+    check_image: function check_image(e) {
+      this.image = e.target.files[0];
+    },
+    addWord: function addWord(e) {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        var config, dataWord, response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                e.preventDefault();
+                config = {
+                  headers: {
+                    "content-type": "multipart/form-data"
+                  }
+                };
+                dataWord = new FormData();
+                dataWord.append("word_eng", _this3.word_eng);
+                dataWord.append("word_ukr", _this3.word_ukr);
+                dataWord.append("example_sentences", _this3.example_sentences);
+                dataWord.append("image", _this3.image);
+                _context3.next = 9;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().post("http://127.0.0.1:8000/api/dictionary", dataWord, config);
+
+              case 9:
+                response = _context3.sent;
+
+                _this3.user_all_known_word.push(response.data.data);
+
+                _this3.sortElement(_this3.user_all_known_word);
+
+                console.log(_this3.user_all_known_word);
+                /* this.word_eng = "";
+                this.word_ukr = "";*/
+
+                _this3.example_sentences = "";
+
+                _this3.$refs.form.reset();
+
+              case 15:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
       }))();
     }
   }
@@ -17020,9 +17087,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     null_data: function null_data() {
       this.word_data = [];
     },
-    check_image: function check_image(e) {
-      this.image = e.target.files[0];
-    },
     not_know_word: function not_know_word() {
       shuffle(this.word_data);
       console.log(this.word_data);
@@ -17066,72 +17130,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    addWord: function addWord(e) {
+    save_word: function save_word(word_id) {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
-        var config, dataWord, response;
+        var data;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                e.preventDefault();
-                config = {
-                  headers: {
-                    "content-type": "multipart/form-data"
-                  }
-                };
-                dataWord = new FormData();
-                dataWord.append("word_eng", _this3.word_eng);
-                dataWord.append("word_ukr", _this3.word_ukr);
-                dataWord.append("example_sentences", _this3.example_sentences);
-                dataWord.append("image", _this3.image);
-                _context3.next = 9;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default().post("http://127.0.0.1:8000/api/dictionary", dataWord, config);
+                _context3.next = 2;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default().post("http://127.0.0.1:8000/api/save_word/" + _this3.user_id + "/" + word_id);
 
-              case 9:
-                response = _context3.sent;
+              case 2:
+                data = _context3.sent;
+                console.log(data);
+                _this3.item_in_arr++;
 
-                _this3.word_data.push(response.data.data);
-                /* this.word_eng = "";
-                this.word_ukr = "";*/
-
-
-                _this3.example_sentences = "";
-
-                _this3.$refs.form.reset();
-
-              case 13:
+              case 5:
               case "end":
                 return _context3.stop();
             }
           }
         }, _callee3);
-      }))();
-    },
-    save_word: function save_word(word_id) {
-      var _this4 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
-        var data;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
-                _context4.next = 2;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default().post("http://127.0.0.1:8000/api/save_word/" + _this4.user_id + "/" + word_id);
-
-              case 2:
-                data = _context4.sent;
-                console.log(data);
-                _this4.item_in_arr++;
-
-              case 5:
-              case "end":
-                return _context4.stop();
-            }
-          }
-        }, _callee4);
       }))();
     }
   }
@@ -17187,14 +17208,86 @@ var _withId = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.withScopeId)("dat
 
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-a603f2ce");
 
-var _hoisted_1 = {
-  "class": "div"
-};
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+  type: "button",
+  "data-bs-toggle": "modal",
+  "data-bs-target": "#addWord",
+  "class": "btn btn-primary m-2 "
+}, " Добавити слова ", -1
+/* HOISTED */
+);
+
 var _hoisted_2 = {
+  "class": "modal fade",
+  id: "addWord",
+  tabindex: "-1",
+  "aria-labelledby": "exampleModalLabel",
+  "aria-hidden": "true"
+};
+var _hoisted_3 = {
+  "class": "modal-dialog"
+};
+var _hoisted_4 = {
+  "class": "modal-content"
+};
+
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  "class": "modal-header"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h5", {
+  "class": "modal-title",
+  id: "exampleModalLabel"
+}, " Добавити слова "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+  type: "button",
+  "class": "btn-close",
+  "data-bs-dismiss": "modal",
+  "aria-label": "Close"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_6 = {
+  "class": "modal-body"
+};
+var _hoisted_7 = {
+  "class": "mb-3"
+};
+
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
+  "for": "example_sentences",
+  "class": "form-label"
+}, "Приклади речення", -1
+/* HOISTED */
+);
+
+var _hoisted_9 = {
+  "class": "mb-3"
+};
+
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
+  "for": "image",
+  "class": "form-label"
+}, "Картинка", -1
+/* HOISTED */
+);
+
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  "class": "modal-footer"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+  type: "button",
+  "class": "btn btn-secondary",
+  "data-bs-dismiss": "modal"
+}, " Закрити "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+  type: "submit",
+  "class": "btn btn-primary"
+}, " Добавити слово ")], -1
+/* HOISTED */
+);
+
+var _hoisted_12 = {
   "class": "table"
 };
 
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
   scope: "col"
 }, "Англійське слово"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", {
   scope: "col"
@@ -17206,17 +17299,61 @@ var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_4 = {
+var _hoisted_14 = {
   scope: "row"
 };
 
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)();
 
 var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("table", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.user_all_known_word, function (all) {
+  var _component_app_input = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("app-input");
+
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
+    ref: "form",
+    onSubmit: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+      return $options.addWord && $options.addWord.apply($options, arguments);
+    }, ["prevent"])),
+    enctype: "multipart/form-data"
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_app_input, {
+    label: "Англійське слово",
+    value: $data.word_eng,
+    "onUpdate:value": _cache[1] || (_cache[1] = function ($event) {
+      return $data.word_eng = $event;
+    })
+  }, null, 8
+  /* PROPS */
+  , ["value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"mb-3\">\n                                    <label for=\"word_eng\" class=\"form-label\"\n                                        >Англійське слово</label\n                                    >\n                                    <input\n                                        type=\"text\"\n                                        class=\"form-control\"\n                                        id=\"word_eng\"\n                                        v-model=\"word_eng\"\n                                        aria-describedby=\"emailHelp\"\n                                    />\n\n                                </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_app_input, {
+    label: "Переклад на українську",
+    value: $data.word_ukr,
+    "onUpdate:value": _cache[2] || (_cache[2] = function ($event) {
+      return $data.word_ukr = $event;
+    })
+  }, null, 8
+  /* PROPS */
+  , ["value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"mb-3\">\n                                    <label for=\"word_ukr\" class=\"form-label\"\n                                        >Переклад на українську</label\n                                    >\n                                    <input\n                                        type=\"text\"\n                                        class=\"form-control\"\n                                        id=\"word_ukr\"\n                                        v-model=\"word_ukr\"\n                                    />\n                                </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
+    "class": "form-control",
+    id: "example_sentences",
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+      return $data.example_sentences = $event;
+    }),
+    rows: "3"
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.example_sentences]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    "class": "form-control",
+    type: "file",
+    onChange: _cache[4] || (_cache[4] = function () {
+      return $options.check_image && $options.check_image.apply($options, arguments);
+    }),
+    id: "image"
+  }, null, 32
+  /* HYDRATE_EVENTS */
+  )])]), _hoisted_11], 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  )])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("table", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.user_all_known_word, function (all) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("tr", {
       key: all
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(all.word_eng), 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("th", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(all.word_eng), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(all.word_ukr), 1
     /* TEXT */
@@ -17528,91 +17665,11 @@ var _hoisted_37 = {
 var _hoisted_38 = {
   "class": "m-1"
 };
-
-var _hoisted_39 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "m-1"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-  type: "button",
-  "data-bs-toggle": "modal",
-  "data-bs-target": "#addWord",
-  "class": "btn btn-primary"
-}, " Добавити слова ")], -1
-/* HOISTED */
-);
-
-var _hoisted_40 = {
-  "class": "modal fade",
-  id: "addWord",
-  tabindex: "-1",
-  "aria-labelledby": "exampleModalLabel",
-  "aria-hidden": "true"
-};
-var _hoisted_41 = {
-  "class": "modal-dialog"
-};
-var _hoisted_42 = {
-  "class": "modal-content"
-};
-
-var _hoisted_43 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "modal-header"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h5", {
-  "class": "modal-title",
-  id: "exampleModalLabel"
-}, " Добавити слова "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-  type: "button",
-  "class": "btn-close",
-  "data-bs-dismiss": "modal",
-  "aria-label": "Close"
-})], -1
-/* HOISTED */
-);
-
-var _hoisted_44 = {
-  "class": "modal-body"
-};
-var _hoisted_45 = {
-  "class": "mb-3"
-};
-
-var _hoisted_46 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
-  "for": "example_sentences",
-  "class": "form-label"
-}, "Приклади речення", -1
-/* HOISTED */
-);
-
-var _hoisted_47 = {
-  "class": "mb-3"
-};
-
-var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
-  "for": "image",
-  "class": "form-label"
-}, "Картинка", -1
-/* HOISTED */
-);
-
-var _hoisted_49 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "modal-footer"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-  type: "button",
-  "class": "btn btn-secondary",
-  "data-bs-dismiss": "modal"
-}, " Закрити "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-  type: "submit",
-  "class": "btn btn-primary"
-}, " Добавити слово ")], -1
-/* HOISTED */
-);
-
-var _hoisted_50 = {
+var _hoisted_39 = {
   "class": "m-1"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _this = this;
-
-  var _component_app_input = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("app-input");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [$data.word_data.length === $data.item_in_arr && $data.item_in_arr !== 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <img\n                                class=\"card-img-top\"\n                                :src=\"'/uploads/' + w_data.image\"\n                                alt=\"Card image cap\"\n                            /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
     onClick: _cache[1] || (_cache[1] = function () {
@@ -17685,51 +17742,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.get_data && $options.get_data.apply($options, arguments);
     }),
     "class": "btn btn-primary"
-  }, " Вчити слова ")]), _hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_42, [_hoisted_43, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
-    ref: "form",
-    onSubmit: _cache[13] || (_cache[13] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.addWord && $options.addWord.apply($options, arguments);
-    }, ["prevent"])),
-    enctype: "multipart/form-data"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_app_input, {
-    label: "Англійське слово",
-    value: $data.word_eng,
-    "onUpdate:value": _cache[9] || (_cache[9] = function ($event) {
-      return $data.word_eng = $event;
-    })
-  }, null, 8
-  /* PROPS */
-  , ["value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"mb-3\">\n                                        <label for=\"word_eng\" class=\"form-label\"\n                                            >Англійське слово</label\n                                        >\n                                        <input\n                                            type=\"text\"\n                                            class=\"form-control\"\n                                            id=\"word_eng\"\n                                            v-model=\"word_eng\"\n                                            aria-describedby=\"emailHelp\"\n                                        />\n\n                                    </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_app_input, {
-    label: "Переклад на українську",
-    value: $data.word_ukr,
-    "onUpdate:value": _cache[10] || (_cache[10] = function ($event) {
-      return $data.word_ukr = $event;
-    })
-  }, null, 8
-  /* PROPS */
-  , ["value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"mb-3\">\n                                        <label for=\"word_ukr\" class=\"form-label\"\n                                            >Переклад на українську</label\n                                        >\n                                        <input\n                                            type=\"text\"\n                                            class=\"form-control\"\n                                            id=\"word_ukr\"\n                                            v-model=\"word_ukr\"\n                                        />\n                                    </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_45, [_hoisted_46, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
-    "class": "form-control",
-    id: "example_sentences",
-    "onUpdate:modelValue": _cache[11] || (_cache[11] = function ($event) {
-      return $data.example_sentences = $event;
-    }),
-    rows: "3"
-  }, null, 512
-  /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.example_sentences]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_47, [_hoisted_48, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-    "class": "form-control",
-    type: "file",
-    onChange: _cache[12] || (_cache[12] = function () {
-      return $options.check_image && $options.check_image.apply($options, arguments);
-    }),
-    id: "image"
-  }, null, 32
-  /* HYDRATE_EVENTS */
-  )])]), _hoisted_49], 544
-  /* HYDRATE_EVENTS, NEED_PATCH */
-  )])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+  }, " Вчити слова ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
     type: "button",
-    onClick: _cache[14] || (_cache[14] = function () {
+    onClick: _cache[9] || (_cache[9] = function () {
       return $options.all_known_word && $options.all_known_word.apply($options, arguments);
     }),
     "class": "btn btn-primary"
