@@ -18,8 +18,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    
+
 });
 Route::apiResource('dictionary',DictionaryController::class);
 Route::post('save_word/{wordId}/{userId}',[WordForUserController::class,'store_word_for_user'])->name('word.store');
 Route::get('all_user_word/{userId}',[WordForUserController::class,'all_word']);
+Route::get('irregular_word',[\App\Http\Controllers\Api\ParseIrregularWordController::class,'index']);
