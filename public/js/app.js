@@ -17019,7 +17019,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   name: "IrregularVerbsComponent",
   data: function data() {
     return {
-      allIrregularWord: ''
+      allIrregularWord: []
     };
   },
   methods: {
@@ -17037,8 +17037,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
                 word = _context.sent;
-                console.log(word.data);
                 _this.allIrregularWord = word.data;
+                console.log(_this.allIrregularWord);
 
               case 5:
               case "end":
@@ -17529,7 +17529,15 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
       return $options.getAllIrregularWord && $options.getAllIrregularWord.apply($options, arguments);
     }),
     "class": "btn btn-primary m-2"
-  }, "Загрузити"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("table", {
+  }, "Загрузити"), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.allIrregularWord, function (all) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("table", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("text", {
+      innerHTML: all
+    }, null, 8
+    /* PROPS */
+    , ["innerHTML"])]);
+  }), 256
+  /* UNKEYED_FRAGMENT */
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
     innerHTML: $data.allIrregularWord
   }, null, 8
   /* PROPS */

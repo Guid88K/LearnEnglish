@@ -16,13 +16,16 @@ class ParseIrregularWordController extends Controller
 //        $all =  $crawler->html();
 
         $html = '';
-
+        $html_array = array();
         foreach ($all as $key => $domElement) {
-            if ($key != 0)
+            if ($key != 0){
                 $html .= $domElement->ownerDocument->saveHTML($domElement);
+                array_push($html_array,$domElement->ownerDocument->saveHTML($domElement));
+            }
+
         }
 
-        return response()->json($html);
+        return response()->json($html_array);
     }
 
 }

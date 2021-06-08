@@ -3,9 +3,12 @@
 
         <button @click="getAllIrregularWord" class="btn btn-primary m-2">Загрузити</button>
 
-        <table v-html="allIrregularWord">
 
+        <table v-for="all in allIrregularWord">
+            <text v-html="all"></text>
         </table>
+
+        <div v-html="allIrregularWord"></div>
     </div>
 </template>
 
@@ -17,14 +20,15 @@ export default {
 
     data() {
         return {
-            allIrregularWord: '',
+            allIrregularWord: [],
         }
     },
     methods: {
         async getAllIrregularWord() {
             const word = await axios.get('http://127.0.0.1:8000/api/irregular_word');
-            console.log(word.data);
+
             this.allIrregularWord = word.data;
+            console.log(this.allIrregularWord);
         }
     }
 }
