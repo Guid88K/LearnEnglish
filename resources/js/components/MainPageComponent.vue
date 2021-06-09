@@ -75,9 +75,7 @@
                                 </p>
                                 <p class="card-text">Приклади речення:</p>
                                 <p class="card-text">
-                                    {{
-                                        word_data[item_in_arr].example_sentences
-                                    }}
+                                    {{ word_data[item_in_arr].example_sentences }}
                                 </p>
 
                                 <div class="card-body">
@@ -137,10 +135,10 @@
                                 <div class="row p-2" v-for="word_u in user_all_known_word" :key="word_u">
                                     <div class="col-md-2"></div>
                                     <div class="col-md-8 text-center">
-                                        <strong>{{word_u.word_eng}} - {{word_u.word_ukr}}</strong>
+                                        <strong>{{ word_u.word_eng }} - {{ word_u.word_ukr }}</strong>
                                     </div>
                                     <div class="col-md-2"></div>
-                                    <p class="card-text text-center">{{word_u.example_sentences}}</p>
+                                    <p class="card-text text-center">{{ word_u.example_sentences }}</p>
                                 </div>
 
                                 <div class="card-body">
@@ -186,6 +184,7 @@
 <script>
 import axios from "axios";
 import AppInput from "./AppInputComponent.vue";
+
 export default {
     components: {
         "app-input": AppInput,
@@ -232,7 +231,7 @@ export default {
             console.log(this.word_data);
         },
         async get_data() {
-            const { data } = await axios.get(
+            const {data} = await axios.get(
                 "http://127.0.0.1:8000/api/dictionary"
             );
             const secondData = await axios.get(
@@ -262,6 +261,7 @@ export default {
         },
     },
 };
+
 function shuffle(a) {
     var j, x, i;
     for (i = a.length - 1; i > 0; i--) {
