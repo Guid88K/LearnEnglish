@@ -8,6 +8,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="user-id" content="{{ Auth::user()->id }}">
+    <meta name="role" content="{{ Auth::user()->role }}">
+    <meta name="domain" content="{{ request()->getHttpHost() }}">
     <title>LearnEnglish</title>
 
 

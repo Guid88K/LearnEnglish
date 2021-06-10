@@ -203,14 +203,22 @@ export default {
             user_id: document
                 .querySelector("meta[name='user-id']")
                 .getAttribute("content"),
+            role: document
+                .querySelector("meta[name='role']")
+                .getAttribute("content"),
+            domain: document
+                .querySelector("meta[name='domain']")
+                .getAttribute("content"),
 
         };
     },
-
+    mounted() {
+        console.log(this.domain);
+    },
     methods: {
         async all_known_word() {
             const secondData = await axios.get(
-                "http://127.0.0.1:8000/api/all_user_word/" + this.user_id
+                "/api/all_user_word/" + this.user_id
             );
             this.user_all_known_word = secondData.data.data;
             this.all_word = 1;
@@ -232,10 +240,10 @@ export default {
         },
         async get_data() {
             const {data} = await axios.get(
-                "http://127.0.0.1:8000/api/dictionary"
+                "/api/dictionary"
             );
             const secondData = await axios.get(
-                "http://127.0.0.1:8000/api/all_user_word/" + this.user_id
+                "/api/all_user_word/" + this.user_id
             );
             this.all_word = 0;
             this.active_status = 1;
@@ -251,7 +259,7 @@ export default {
 
         async save_word(word_id) {
             const data = await axios.post(
-                "http://127.0.0.1:8000/api/save_word/" +
+                "/api/save_word/" +
                 this.user_id +
                 "/" +
                 word_id

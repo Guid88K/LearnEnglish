@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="row">
-            <div class="d-flex flex-row-reverse bd-highlight">
+            <div class="d-flex flex-row-reverse bd-highlight" v-if="role === 'admin'">
                 <button class="btn btn-primary m-2" @click="$router.push('lessons_add')">Добавити нову тему
                 </button>
             </div>
@@ -22,6 +22,15 @@
                                 class="btn btn-primary">Читати повністю
                         </button>
 
+                            <button v-if="role === 'admin'" @click="editLessons(lessons.id)"
+                                    class="btn btn-primary  ms-2">Редагувати
+                            </button>
+                            <button v-if="role === 'admin'" @click="deleteLessons(lessons.id)"
+                                    class="btn btn-primary  ms-2">Видалити
+                            </button>
+
+
+
                     </div>
                 </div>
             </div>
@@ -34,12 +43,17 @@ import axios from "axios";
 
 export default {
 
-    props: ['lessons_id'],
+
     name: "GrammarComponent",
     data() {
         return {
             grammar: [],
-
+            role: document
+                .querySelector("meta[name='role']")
+                .getAttribute("content"),
+            domain: document
+                .querySelector("meta[name='domain']")
+                .getAttribute("content"),
         }
     },
     mounted() {
@@ -47,13 +61,16 @@ export default {
     },
     methods: {
         async getGrammar() {
-            const grammarData = await axios.get('http://127.0.0.1:8000/api/grammar/');
+            const grammarData = await axios.get('/api/grammar/');
             console.log(grammarData.data.data);
             this.grammar = grammarData.data.data;
             this.sortElement(this.grammar)
         },
         showLessons(item) {
             this.$router.push({name: 'lessons', params: {id: item}})
+        },
+        editLessons(item) {
+            this.$router.push({name: 'editLessons', params: {id: item}})
         },
         sortElement(array) {
             array.sort(function (a, b) {
@@ -62,6 +79,10 @@ export default {
 
             })
         },
+        async deleteLessons(items) {
+            await axios.delete("/api/grammar/" + items);
+            this.grammar = this.grammar.filter((word) => word.id !== items);
+        }
     }
 }
 </script>

@@ -3,7 +3,8 @@
         <div class="row p-2">
             <div class="col-1"></div>
             <div class="col-10 border">
-                <form ref="formLessons" @submit.prevent="newLessons()" enctype="multipart/form-data">
+
+                <form @submit.prevent="updateLessons" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label class="form-label text-danger h4">{{ error }}</label>
 
@@ -49,7 +50,7 @@
                         </editor>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Добавити новий урок</button>
+                    <button type="submit" class="btn btn-primary">Зберегти</button>
                 </form>
             </div>
             <div class="col-1"></div>
@@ -59,6 +60,7 @@
 </template>
 
 <script>
+
 import Editor from '@tinymce/tinymce-vue';
 import axios from "axios";
 
@@ -66,7 +68,7 @@ export default {
     components: {
         editor: Editor
     },
-    name: "AddLessonsComponent",
+    name: "UpdateLessonsComponent",
     data() {
         return {
             name_lessons: '',
@@ -75,8 +77,17 @@ export default {
             error: ''
         }
     },
+    mounted() {
+        this.getLesson();
+    },
     methods: {
-        async newLessons() {
+        async getLesson() {
+            const lesson = await axios.get('/api/grammar/' + this.$route.params.id);
+            this.name_lessons = lesson.data.data.name_topics;
+            this.category_lessons = lesson.data.data.category_topics;
+            this.content_lessons = lesson.data.data.content_topics;
+        },
+        async updateLessons() {
             if (this.name_lessons === '') {
                 this.error = 'Введіть назву';
             } else if (this.category_lessons === '') {
@@ -85,19 +96,18 @@ export default {
                 this.error = 'Введіть контент';
             } else {
                 this.error = '';
-                const response = axios.post('/api/grammar', {
+                const response = axios.put('/api/grammar/' + this.$route.params.id, {
                     name_topics: this.name_lessons,
                     category_topics: this.category_lessons,
                     content_topics: this.content_lessons
                 });
-                this.$refs.formLessons.reset();
+
                 this.$router.back();
                 console.log(response)
             }
 
         }
     }
-
 }
 </script>
 

@@ -178,7 +178,7 @@ export default {
 
         async all_known_word() {
             const secondData = await axios.get(
-                "http://127.0.0.1:8000/api/dictionary/"
+                "/api/dictionary/"
             );
             this.user_all_known_word = secondData.data.data;
             this.sortElement(this.user_all_known_word)
@@ -186,8 +186,7 @@ export default {
         },
         async deleteWord(idx) {
 
-            await axios.delete("http://127.0.0.1:8000/api/dictionary/" + idx);
-
+            await axios.delete("/api/dictionary/" + idx);
             this.user_all_known_word = this.user_all_known_word.filter((word) => word.id !== idx);
         },
         check_image(e) {
@@ -207,7 +206,7 @@ export default {
             dataWord.append("example_sentences", this.example_sentences);
             dataWord.append("image", this.image);
             const response = await axios.post(
-                "http://127.0.0.1:8000/api/dictionary",
+                "/api/dictionary",
                 dataWord,
                 config
             );

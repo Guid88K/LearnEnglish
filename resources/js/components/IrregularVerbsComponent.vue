@@ -25,7 +25,7 @@ export default {
     },
     methods: {
         async getAllIrregularWord() {
-            const word = await axios.get('http://127.0.0.1:8000/api/irregular_word');
+            const word = await axios.get('/api/irregular_word');
 
             this.allIrregularWord = word.data;
             console.log(this.allIrregularWord);

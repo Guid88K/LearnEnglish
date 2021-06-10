@@ -19,7 +19,7 @@
                         <li class="nav-item">
                             <router-link :to="{name:'irregular_verbs'}" class="nav-link text-light">Таблиця неправильних дієслів</router-link>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" v-if="role === 'admin'">
                             <router-link :to="{name:'admin'}" class="nav-link text-light">Admin</router-link>
                         </li>
 
@@ -66,7 +66,14 @@
 
 <script>
 export default {
-    name: "NavBar"
+    name: "NavBar",
+    data(){
+        return{
+            role: document
+                .querySelector("meta[name='role']")
+                .getAttribute("content"),
+        }
+    }
 }
 </script>
 
